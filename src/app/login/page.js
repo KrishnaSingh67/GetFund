@@ -1,7 +1,20 @@
 "use client"
-import React from 'react'
+import React, {useEffect} from 'react'
+import { useRouter } from 'next/navigation'
+import { signIn ,signOut, useSession } from 'next-auth/react'
 
-const page = () => {
+const Page = () => {
+const { data: session } = useSession()
+  const router = useRouter()
+
+  useEffect(() => {
+    document.title = "Login - Get Me A Chai" 
+    console.log(session)
+    if (session) {
+      router.push('/dashboard')
+    }
+  }, [session, router])
+
   return (
    <div className='text-white py-14 container mx-auto'>
       <h1 className='text-center font-bold text-3xl'>Login to Get Started</h1>
@@ -92,7 +105,7 @@ const page = () => {
         </button>
 
 
-        <button onClick={() => { signIn("github") }}
+        <button onClick={()=>signIn("github")}
           className="flex items-center w-64 bg-slate-50 text-black border border-gray-300 rounded-lg shadow-md max-w-xs px-6 py-2 text-sm font-medium  hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
           <svg className="h-6 w-6 mr-2" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink"
             viewBox="0 0 73 73" version="1.1">
@@ -142,4 +155,4 @@ const page = () => {
   )
 }
 
-export default page
+export default Page
